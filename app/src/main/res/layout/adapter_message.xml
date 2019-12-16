@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:background="@android:color/white"
+    android:elevation="10dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvEmail"
+        style="@style/TextViewCustom.Title"
+        android:layout_toLeftOf="@id/tvFlag"
+        android:text="@string/email"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryDark" />
+
+    <TextView
+        android:id="@+id/tvLine"
+        style="@style/TextViewCustom.Line"
+        android:layout_below="@id/tvEmail">
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvLine"
+        android:padding="10dp"
+        android:text="@string/name" />
+
+    <TextView
+        android:id="@+id/tvBody"
+        style="@style/TextViewCustom.Body"
+        android:layout_below="@id/tvName"
+        android:text="@string/body" />
+
+    <TextView
+        android:id="@+id/tvFlag"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_alignBaseline="@id/tvEmail"
+        android:layout_alignParentRight="true"
+        android:layout_margin="10dp"
+        android:background="@drawable/theme_flag"
+        android:visibility="gone" />
+
+</RelativeLayout>
