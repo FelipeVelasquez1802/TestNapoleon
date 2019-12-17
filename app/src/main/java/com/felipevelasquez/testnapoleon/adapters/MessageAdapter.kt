@@ -1,11 +1,8 @@
 package com.felipevelasquez.testnapoleon.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.felipevelasquez.testnapoleon.R
 import com.felipevelasquez.testnapoleon.objects.Message
@@ -13,14 +10,18 @@ import kotlinx.android.synthetic.main.adapter_message.view.*
 
 class MessageAdapter(
     private val dataset: Array<Message>,
-    private val onItemClickListener: OnItemClickListener
+    private val listener: OnItemClickListener
 ) :
     RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() {
+
+    interface OnItemClickListener {
+        fun onItemClick(v: View?)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.adapter_message, parent, false)
-        return MessageViewHolder(view, onItemClickListener)
+        return MessageViewHolder(view, listener)
     }
 
     override fun getItemCount() = dataset.size
@@ -35,21 +36,22 @@ class MessageAdapter(
         }
     }
 
-    interface OnItemClickListener {
-        fun onClick(v: View?)
-    }
+    class MessageViewHolder(itemView: View, listener: OnItemClickListener) :
+        RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
-    class MessageViewHolder(itemView: View, onItemClickListener: OnItemClickListener) :
-        RecyclerView.ViewHolder(itemView),
-        View.OnClickListener {
+        init {
+            itemView.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            listener.onItemClick(v)
+        }
+
+        val listener = listener
         val email = itemView.tvEmail
         val name = itemView.tvName
         val body = itemView.tvBody
         val tag = itemView.tvFlag
-        val onItemClickListener = onItemClickListener
 
-        override fun onClick(v: View?) {
-            onItemClickListener.onClick(v)
-        }
     }
 }

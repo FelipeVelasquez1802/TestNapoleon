@@ -15,6 +15,9 @@ import com.google.gson.reflect.TypeToken
 import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity(), MessageAdapter.OnItemClickListener {
+    override fun onItemClick(v: View?) {
+        Log.d("MainActivityLog", "Hello!")
+    }
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
@@ -35,9 +38,5 @@ class MainActivity : AppCompatActivity(), MessageAdapter.OnItemClickListener {
             layoutManager = viewManager
             adapter = viewAdapter
         }
-    }
-
-    override fun onClick(v: View?) {
-        Log.d("MainActivity", "Algo")
     }
 }
