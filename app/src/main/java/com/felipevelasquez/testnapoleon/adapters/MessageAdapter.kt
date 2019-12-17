@@ -11,7 +11,7 @@ import com.felipevelasquez.testnapoleon.objects.Post
 import kotlinx.android.synthetic.main.adapter_message.view.*
 
 class MessageAdapter(
-    private val posts: Array<Post>,
+    private val posts: List<Post>,
     private val listener: OnItemClickListener
 ) :
     RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() {
