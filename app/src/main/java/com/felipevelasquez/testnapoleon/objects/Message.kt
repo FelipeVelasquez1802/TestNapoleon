@@ -1,9 +1,7 @@
 package com.felipevelasquez.testnapoleon.objects
 
-class Message() {
+class Message : CorePost() {
     var postId = 0
-    var id = 0
     var name = ""
     var email = ""
-    var body = ""
 }

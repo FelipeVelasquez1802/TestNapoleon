@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.MessageDetailActivity">
+
+    <TextView
+        android:id="@+id/tvTitle"
+        style="@style/TextViewCustom"
+        android:text="@string/name"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryDark" />
+
+    <TextView
+        android:id="@+id/tvLine"
+        style="@style/TextViewCustom.Line"
+        android:layout_below="@id/tvTitle"
+        android:background="@color/colorPrimaryDark" />
+
+    <TextView
+        android:id="@+id/tvBody"
+        style="@style/TextViewCustom.Body"
+        android:layout_below="@id/tvLine"
+        android:text="@string/body" />
+
+    <RelativeLayout
+        android:id="@+id/rlUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvBody"
+        android:layout_marginHorizontal="10dp"
+        android:background="@android:color/white"
+        android:elevation="5dp">
+
+        <TextView
+            android:id="@+id/tvName"
+            style="@style/TextViewCustom"
+            android:text="@string/name"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/tvEmail"
+            style="@style/TextViewCustom.Title"
+            android:layout_below="@id/tvName"
+            android:text="@string/email" />
+
+        <TextView
+            android:id="@+id/tvLine2"
+            style="@style/TextViewCustom.Line"
+            android:layout_below="@id/tvEmail"
+            android:background="@color/colorPrimary" />
+
+        <TextView
+            android:id="@+id/tvPhone"
+            style="@style/TextViewCustom.Body"
+            android:layout_below="@id/tvLine2"
+            android:text="@string/phone"
+            android:textAlignment="textEnd" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

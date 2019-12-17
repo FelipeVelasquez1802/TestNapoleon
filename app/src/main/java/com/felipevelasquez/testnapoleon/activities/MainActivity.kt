@@ -1,23 +1,18 @@
 package com.felipevelasquez.testnapoleon.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.felipevelasquez.testnapoleon.R
 import com.felipevelasquez.testnapoleon.adapters.MessageAdapter
-import com.felipevelasquez.testnapoleon.objects.Message
-import com.felipevelasquez.testnapoleon.tests.MessageTest
+import com.felipevelasquez.testnapoleon.objects.Post
+import com.felipevelasquez.testnapoleon.tests.PostTest
+import com.felipevelasquez.testnapoleon.tools.POST
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity(), MessageAdapter.OnItemClickListener {
-    override fun onItemClick(v: View?) {
-        Log.d("MainActivityLog", "Hello!")
-    }
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
@@ -27,16 +22,23 @@ class MainActivity : AppCompatActivity(), MessageAdapter.OnItemClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val messageTest = MessageTest()
+        val postTest = PostTest()
 
-        val messages = Gson().fromJson(messageTest.json, Array<Message>::class.java)
+        val posts = Gson().fromJson(postTest.json, Array<Post>::class.java)
 
         viewManager = LinearLayoutManager(this)
-        viewAdapter = MessageAdapter(messages, this)
+        viewAdapter = MessageAdapter(posts, this)
         recyclerView = findViewById<RecyclerView>(R.id.rvList).apply {
             setHasFixedSize(true)
             layoutManager = viewManager
             adapter = viewAdapter
         }
+    }
+
+    override fun onItemClick(post: Post) {
+        val intent = Intent(this, MessageDetailActivity::class.java)
+        intent.putExtra(POST, post._string_json())
+        startActivity(intent)
+//        Log.d("MainActivityLog", message.name)
     }
 }

@@ -3,4 +3,5 @@
     <string name="name">Name</string>
     <string name="email">Email</string>
     <string name="body">Body</string>
+    <string name="phone">Phone</string>
 </resources>
