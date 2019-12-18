@@ -1,5 +1,7 @@
 package com.felipevelasquez.testnapoleon.activities
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
@@ -30,6 +32,14 @@ class MessageDetailActivity : AppCompatActivity() {
         userTest = UserTest()
         user = Gson().fromJson(userTest.json, User::class.java)
         initialElements()
+        saveItem()
+    }
+
+    fun saveItem() {
+        val sharedPreference = getSharedPreferences(POST, Context.MODE_PRIVATE)
+        var editor = sharedPreference.edit()
+        editor.putString("${post.id}", post.title)
+        editor.commit()
     }
 
     fun initialElements() {

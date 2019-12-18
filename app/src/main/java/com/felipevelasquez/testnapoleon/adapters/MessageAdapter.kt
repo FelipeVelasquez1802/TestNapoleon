@@ -1,5 +1,7 @@
 package com.felipevelasquez.testnapoleon.adapters
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.felipevelasquez.testnapoleon.R
 import com.felipevelasquez.testnapoleon.objects.Post
+import com.felipevelasquez.testnapoleon.tools.POST
 import kotlinx.android.synthetic.main.adapter_message.view.*
 
 class MessageAdapter(
@@ -15,6 +18,8 @@ class MessageAdapter(
     private val listener: OnItemClickListener
 ) :
     RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() {
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var editor: SharedPreferences.Editor
 
     interface OnItemClickListener {
         fun onItemClick(post: Post)
@@ -23,6 +28,8 @@ class MessageAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.adapter_message, parent, false)
+
+        sharedPreferences = parent.context.getSharedPreferences(POST, Context.MODE_PRIVATE)
         return MessageViewHolder(view)
     }
 
@@ -34,7 +41,8 @@ class MessageAdapter(
         Log.d("MessageAdapterLog", post.title)
         holder.body.text = post.body
         if (position < 5) {
-            holder.tag.visibility = View.VISIBLE
+            if (sharedPreferences.getString("${post.id}", null) == null)
+                holder.tag.visibility = View.VISIBLE
         }
         holder.init(post, listener)
     }
