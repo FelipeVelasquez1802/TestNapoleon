@@ -45,7 +45,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvBody"
+        android:padding="10dp"
         android:layout_alignParentRight="true"
+        android:background="@android:color/darker_gray"
         android:src="@drawable/ic_star_black_24dp"
         android:tint="@android:color/white" />
 
