@@ -2,11 +2,14 @@ package com.felipevelasquez.testnapoleon.adapters
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.felipevelasquez.testnapoleon.R
 import com.felipevelasquez.testnapoleon.objects.Post
@@ -18,15 +21,17 @@ class MessageAdapter(
     private val listener: OnItemClickListener
 ) :
     RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() {
+
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
+    private lateinit var view: View
 
     interface OnItemClickListener {
         fun onItemClick(post: Post)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
-        val view =
+        view =
             LayoutInflater.from(parent.context).inflate(R.layout.adapter_message, parent, false)
 
         sharedPreferences = parent.context.getSharedPreferences(POST, Context.MODE_PRIVATE)
@@ -44,6 +49,16 @@ class MessageAdapter(
             if (sharedPreferences.getString("${post.id}", null) == null)
                 holder.tag.visibility = View.VISIBLE
         }
+        holder.favorite.setOnClickListener { v ->
+            run {
+                holder.favorite.setColorFilter(
+                    ContextCompat.getColor(
+                        view.context,
+                        R.color.colorPrimary
+                    ), android.graphics.PorterDuff.Mode.MULTIPLY
+                );
+            }
+        }
         holder.init(post, listener)
     }
 
@@ -59,6 +74,6 @@ class MessageAdapter(
         val title: TextView = itemView.tvTitle
         val body: TextView = itemView.tvBody
         val tag: TextView = itemView.tvFlag
-
+        val favorite: ImageButton = itemView.ibFavorite
     }
 }
