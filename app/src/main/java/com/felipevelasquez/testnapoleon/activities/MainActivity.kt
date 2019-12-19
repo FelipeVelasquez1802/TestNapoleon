@@ -6,9 +6,17 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.widget.Toast
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.felipevelasquez.testnapoleon.R
 import com.felipevelasquez.testnapoleon.adapters.MessageAdapter
 import com.felipevelasquez.testnapoleon.objects.Post
@@ -27,6 +35,8 @@ class MainActivity : AppCompatActivity(), MessageAdapter.OnItemClickListener {
     private lateinit var castToJSON: CastToJSON
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
+    private lateinit var postsList: ArrayList<Post>
+    private lateinit var postTest: PostTest
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,10 +45,11 @@ class MainActivity : AppCompatActivity(), MessageAdapter.OnItemClickListener {
         sharedPreferences = getSharedPreferences(POST, Context.MODE_PRIVATE)
         editor = sharedPreferences.edit()
 
-        val postTest = PostTest()
+        postTest = PostTest()
         castToJSON = CastToJSON()
+        requests()
 
-        var postsList = castToJSON.toListPost(postTest.json)
+        postsList = ArrayList()
 
         viewManager = LinearLayoutManager(this)
         viewAdapter = MessageAdapter(postsList, this)
@@ -70,10 +81,53 @@ class MainActivity : AppCompatActivity(), MessageAdapter.OnItemClickListener {
         itemTouchHelper.attachToRecyclerView(recyclerView)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.mn_main, menu)
+        return true
+    }
+
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.i_delete_all -> {
+                postsList.clear()
+                viewAdapter.notifyDataSetChanged()
+                true
+            }
+            R.id.i_update -> {
+                postsList.clear()
+                requests()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     override fun onItemClick(post: Post) {
         val intent = Intent(this, MessageDetailActivity::class.java)
         intent.putExtra(POST, post._string_json())
         startActivity(intent)
-//        Log.d("MainActivityLog", message.name)
+    }
+
+    fun requests() {
+        val queue = Volley.newRequestQueue(this)
+        val url = "https://jsonplaceholder.typicode.com/users/1/posts"
+
+        val stringRequest = StringRequest(
+            Request.Method.GET, url,
+            Response.Listener<String> { response ->
+                postsList.addAll(castToJSON.toListPost(response))
+                viewAdapter.notifyDataSetChanged()
+            },
+            Response.ErrorListener { error ->
+                Toast.makeText(
+                    this,
+                    "Error: $error",
+                    Toast.LENGTH_LONG
+                ).show()
+            })
+
+        queue.add(stringRequest)
     }
 }

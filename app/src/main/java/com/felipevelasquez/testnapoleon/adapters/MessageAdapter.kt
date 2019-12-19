@@ -37,7 +37,6 @@ class MessageAdapter(
             LayoutInflater.from(parent.context).inflate(R.layout.adapter_message, parent, false)
 
         sharedPreferences = parent.context.getSharedPreferences(POST, Context.MODE_PRIVATE)
-        editor = sharedPreferences.edit()
         return MessageViewHolder(view)
     }
 
@@ -47,27 +46,20 @@ class MessageAdapter(
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
         val post = posts.get(position)
         holder.title.text = post.title
-        Log.d("MessageAdapterLog", post.title)
         holder.body.text = post.body
-        if (position < 5) {
+        if (position < 20) {
             if (sharedPreferences.getString("${post.id}", null) == null)
                 holder.tag.visibility = View.VISIBLE
         }
-        var flag: Boolean = !sharedPreferences.getBoolean("$post", false)
-        if (flag) {
-            holder.favorite.setBackgroundResource(R.color.colorAccent)
-        } else {
-            holder.favorite.setBackgroundResource(android.R.color.darker_gray)
-        }
+        var flag: Boolean = sharedPreferences.getBoolean("flag_${post}", false)
+        holder.favorite.setBackgroundResource(if (flag) R.color.colorAccent else android.R.color.darker_gray)
         holder.favorite.setOnClickListener { v ->
             run {
-                if (flag) {
-                    holder.favorite.setBackgroundResource(R.color.colorAccent)
-                } else {
-                    holder.favorite.setBackgroundResource(android.R.color.darker_gray)
-                }
-                editor.putBoolean("$post", flag)
-                editor.commit()
+                flag = !flag
+                holder.favorite.setBackgroundResource(if (flag) R.color.colorAccent else android.R.color.darker_gray)
+                editor = sharedPreferences.edit()
+                editor.putBoolean("flag_${post}", flag)
+                editor.apply()
             }
         }
         holder.init(post, listener)

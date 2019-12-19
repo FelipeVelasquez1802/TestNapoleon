@@ -4,4 +4,6 @@
     <string name="email">Email</string>
     <string name="body">Body</string>
     <string name="phone">Phone</string>
+    <string name="delete_all">Borrar todo</string>
+    <string name="update">Actualizar lista</string>
 </resources>
